@@ -1,13 +1,14 @@
+'user client'
 import Link from "next/link";
 
-const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
+const Form = ({ type, post,session, setPost, submitting, handleSubmit }) => {
   return (
     <section className='w-full max-w-full flex-start flex-col'>
       <h1 className='head_text text-left'>
-        <span className='blue_gradient'>{type} Daily Gratitude</span>
+        <span className='blue_gradient'>Hi, {session?.user.name}</span>
       </h1>
-      <p className='desc text-left max-w-md'>
-        {type} Jot down what you're grateful for daily to attract more things you desire in life.
+      <p className='desc text-left max-w-md text-2xl'>
+      write down what you're grateful for daily to attract more things you desire in life.
       </p>
 
       <form
@@ -15,13 +16,13 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
         className='mt-10 w-full max-w-2xl flex flex-col gap-7 glassmorphism'
       >
         <label>
-          <span className='font-satoshi font-semibold text-base text-gray-700'>
-            What's your grateful for today?
+          <span className='text-2xl font-satoshi font-semibold  text-gray-700'>
+            What are you grateful for today?
           </span>
 
           <textarea
-            value={post.Note}
-            onChange={(e) => setPost({ ...post, Note: e.target.value })}
+            value={post.note}
+            onChange={(e) => setPost({ ...post, note: e.target.value })}
             placeholder='Jot them down here'
             required
             className='form_textarea '
@@ -29,7 +30,7 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
         </label>
 
         <label>
-          <span className='font-satoshi font-semibold text-base text-gray-700'>
+          <span className='font-satoshi font-semibold text-  text-gray-700'>
             Hashtag{" "}
             <span className='font-normal'>
               (#thankyou, #moneylovesme, #ilovetraveling,goodvibes etc.)

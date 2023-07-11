@@ -11,22 +11,22 @@ const CreateNote = () => {
   const { data: session } = useSession();
 
   const [submitting, setIsSubmitting] = useState(false);
-  const [post, setPost] = useState({ Note: "", tag: "" });
+  const [post, setPost] = useState({ note: "", tag: "" });
+  
 
   const createNote = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("/api/Note/new", {
+      const response = await fetch("/api/note/new", {
         method: "POST",
         body: JSON.stringify({
-          Note: post.Note,
+          note: post.note,
           userId: session?.user.id,
           tag: post.tag,
         }),
       });
-
       if (response.ok) {
         router.push("/");
       }
@@ -41,6 +41,7 @@ const CreateNote = () => {
     <Form
       type='Jot down '
       post={post}
+      session={session}
       setPost={setPost}
       submitting={submitting}
       handleSubmit={createNote}

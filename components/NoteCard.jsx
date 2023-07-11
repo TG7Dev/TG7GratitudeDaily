@@ -22,13 +22,13 @@ const NoteCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
   };
 
   const handleCopy = () => {
-    setCopied(post.Note);
-    navigator.clipboard.writeText(post.Note);
+    setCopied(post.note);
+    navigator.clipboard.writeText(post.note);
     setTimeout(() => setCopied(false), 3000);
   };
  
   return (
-    <div className='Note_card'>
+    <div className='note_card'>
       <div className='flex justify-between items-start gap-5'>
         <div
           className='flex-1 flex justify-start items-center gap-3 cursor-pointer'
@@ -55,18 +55,18 @@ const NoteCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {
         <div className='copy_btn' onClick={handleCopy}>
           <Image
             src={
-              copied === post.Note
+              copied === post.note
                 ? "/assets/icons/tick.svg"
                 : "/assets/icons/copy.svg"
             }
-            alt={copied === post.Note ? "tick_icon" : "copy_icon"}
+            alt={copied === post.note ? "tick_icon" : "copy_icon"}
             width={12}
             height={12}
           />
         </div>
       </div>
 
-      <p className='my-4 font-satoshi text-sm text-gray-700'>{post.Note}</p>
+      <p className='my-4 font-satoshi text-sm text-gray-700'>{post.note}</p>
       <p
         className='font-inter text-sm blue_gradient cursor-pointer'
         onClick={() => handleTagClick && handleTagClick(post.tag)}

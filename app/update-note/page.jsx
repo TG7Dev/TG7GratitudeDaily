@@ -5,39 +5,39 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import Form from "@components/Form";
 
-const UpdatePrompt = () => {
+const UpdateNote = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const promptId = searchParams.get("id");
+  const noteId = searchParams.get("id");
 
-  const [post, setPost] = useState({ prompt: "", tag: "", });
+  const [post, setPost] = useState({ note: "", tag: "", });
   const [submitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const getPromptDetails = async () => {
-      const response = await fetch(`/api/prompt/${promptId}`);
+      const response = await fetch(`/api/note/${noteId}`);
       const data = await response.json();
 
       setPost({
-        prompt: data.prompt,
+        note: data.note,
         tag: data.tag,
       });
     };
 
-    if (promptId) getPromptDetails();
-  }, [promptId]);
+    if (noteId) getPromptDetails();
+  }, [noteId]);
 
-  const updatePrompt = async (e) => {
+  const updateNote = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    if (!promptId) return alert("Missing PromptId!");
+    if (!noteId) return alert("Missing PromptId!");
 
     try {
-      const response = await fetch(`/api/prompt/${promptId}`, {
+      const response = await fetch(`/api/note/${noteId}`, {
         method: "PATCH",
         body: JSON.stringify({
-          prompt: post.prompt,
+          note: post.note,
           tag: post.tag,
         }),
       });
@@ -58,9 +58,9 @@ const UpdatePrompt = () => {
       post={post}
       setPost={setPost}
       submitting={submitting}
-      handleSubmit={updatePrompt}
+      handleSubmit={updateNote}
     />
   );
 };
 
-export default UpdatePrompt;
+export default UpdateNote;

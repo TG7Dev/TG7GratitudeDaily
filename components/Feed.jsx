@@ -1,36 +1,47 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 import NoteCard from "./NoteCard";
 
-const NoteCardList = ({ data, handleTagClick }) => {
-  return (
-    <div className='mt-16 Note_layout'>
-      {data.map((post) => (
-        <NoteCard
-          key={post._id}
-          post={post}
-          handleTagClick={handleTagClick}
-        />
-      ))}
-    </div>
-  );
-};
-
 const Feed = () => {
   const [allPosts, setAllPosts] = useState([]);
+  const { data: session } = useSession();
 
   // Search states
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
 
-  const fetchPosts = async () => {
-    const response = await fetch("/api/Note");
-    const data = await response.json();
+  const NoteCardList = ({ data, handleTagClick }) => {
+    return (
+      <div className="mt-16 note_layout">
+        {data.map((post) => (
+          <NoteCard
+            key={post._id}
+            post={post}
+            handleTagClick={handleTagClick}
+          />
+        ))}
+      </div>
+    );
+  };
 
-    setAllPosts(data);
+  const fetchPosts = async () => {
+    let newData = [];
+
+    await fetch("/api/note")
+      .then((res) => res.json())
+      .then((data) => {
+        for (let i = 0; i < data.length; i++) {
+          if (data[i].creator._id === session?.user.id) {
+            newData.push(data[i]);
+          }
+        }
+      });
+
+    setAllPosts(newData);
   };
 
   useEffect(() => {
@@ -43,7 +54,7 @@ const Feed = () => {
       (item) =>
         regex.test(item.creator.username) ||
         regex.test(item.tag) ||
-        regex.test(item.Note)
+        regex.test(item.note)
     );
   };
 
@@ -68,24 +79,21 @@ const Feed = () => {
   };
 
   return (
-    <section className='feed'>
-      <form className='relative w-full flex-center'>
+    <section className="feed">
+      <form className="relative w-full flex-center">
         <input
-          type='text'
-          placeholder='Search for a tag or a username'
+          type="text"
+          placeholder="Search for a tag or a username"
           value={searchText}
           onChange={handleSearchChange}
           required
-          className='search_input peer'
+          className="search_input peer"
         />
       </form>
 
       {/* All Notes */}
       {searchText ? (
-        <NoteCardList
-          data={searchedResults}
-          handleTagClick={handleTagClick}
-        />
+        <NoteCardList data={searchedResults} handleTagClick={handleTagClick} />
       ) : (
         <NoteCardList data={allPosts} handleTagClick={handleTagClick} />
       )}
