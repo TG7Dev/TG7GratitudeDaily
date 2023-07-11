@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 
 const NoteCard = ({ post, handleEdit, handleDelete, handleTagClick }) => {

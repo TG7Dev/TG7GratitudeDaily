@@ -1,5 +1,6 @@
 import NoteCard from "./NoteCard";
 
+
 const Profile = ({ name, desc, data, handleEdit, handleDelete }) => {
   return (
     <section className='w-full'>
